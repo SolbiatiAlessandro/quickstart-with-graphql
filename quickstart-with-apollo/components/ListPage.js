@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 import {
   View,
   TouchableHighlight,
-  ListView,
+  FlatList,
   Modal,
   StyleSheet,
   Text
@@ -14,7 +14,7 @@ import CreatePage from './CreatePage'
 
 const allPostsQuery = gql`
   query {
-    allPosts(orderBy: createdAt_DESC) {
+    allPosts{
       id
       imageUrl
       description
@@ -26,22 +26,12 @@ class ListPage extends React.Component {
 
   constructor(props) {
     super(props)
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
-      dataSource: ds.cloneWithRows([]),
+	  dataSource: [],
       modalVisible: false,
       user: undefined,
     }
 
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.allPostsQuery.loading && !nextProps.allPostsQuery.error) {
-      const {dataSource} = this.state
-      this.setState({
-        dataSource: dataSource.cloneWithRows(nextProps.allPostsQuery.allPosts),
-      })
-    }
   }
 
   render () {
@@ -64,10 +54,10 @@ class ListPage extends React.Component {
           }}/>
         </Modal>
 
-        <ListView
+        <FlatList
           enableEmptySections={true}
-          dataSource={this.state.dataSource}
-          renderRow={(post) => (
+          data={this.state.dataSource}
+          renderItem={({ post }) => (
             <Post
               description={post.description}
               imageUrl={post.imageUrl}

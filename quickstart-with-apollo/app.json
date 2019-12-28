@@ -1,5 +1,8 @@
 {
   "expo": {
-    "sdkVersion": "22.0.0"
+    "name": "quickstart-with-apollo",
+    "slug": "quickstart-with-apollo",
+    "sdkVersion": "36.0.0",
+    "privacy": "public"
   }
 }
